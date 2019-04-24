@@ -1,0 +1,63 @@
+swagger: '2.0'
+info:
+  description: 9322 assignment1
+  version: 1.0.0
+  title: Dentist Reservation App
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: localhost
+basePath: /v1
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /DentistResevation/{expression}:
+    get:
+      summary: get user input and reply it.
+      operationId: getDentistsExpressions
+      tags:
+        - Dentist and Timeslots
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: expression
+          in: path
+          description: expression
+          type: string
+          required: true
+        
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            properties:
+              response:        
+                type: string
+        '400':
+          description: Don't understand
+          schema:
+            $ref: '#/definitions/Error'
+        
+definitions:
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    required:
+      - code
+      - message
+         
+  
+

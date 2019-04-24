@@ -1,0 +1,185 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "timeslot service",
+    "version": "1.0.0",
+    "title": "Swagger dentist reservation microservice 2",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "basePath": "/v2",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/timeslots/{id}": {
+      "get": {
+        "operationId": "get_timeslots_by_id",
+        "summary": "Get availble time slots for every dentist",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "description": "ID of the dentist."
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Timeslot"
+              },
+              "example": [
+                {
+                  "time": "Monday 11:00 - 12:00 am",
+                  "status": "available"
+                },
+                {
+                  "time": "Monday 10:00 - 11:00 am",
+                  "status": "available"
+                }
+              ]
+            }
+          },
+          "404": {
+            "description": "Id not found.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "book_timeslots",
+        "summary": "Book an appointment",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "description": "ID of the doctor."
+          },
+          {
+            "in": "query",
+            "name": "timeslot",
+            "required": true,
+            "type": "string",
+            "description": "Timeslot."
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ],
+        "responses": {
+          "200": {
+            "description": "Booked",
+            "schema": {
+              "$ref": "#/definitions/Timeslot"
+            }
+          },
+          "400": {
+            "description": "Not Booked",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "cancel_timeslots",
+        "summary": "Cancel an appointment",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "integer",
+            "description": "ID of the doctor."
+          },
+          {
+            "in": "query",
+            "name": "timeslot",
+            "required": true,
+            "type": "string",
+            "description": "Timeslot."
+          }
+        ],
+        "tags": [
+          "Appointments"
+        ],
+        "responses": {
+          "200": {
+            "description": "Canceled",
+            "schema": {
+              "$ref": "#/definitions/Timeslot"
+            }
+          },
+          "400": {
+            "description": "Not Canceled",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Timeslot": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "description": "time"
+        },
+        "status": {
+          "type": "string",
+          "description": "status"
+        }
+      },
+      "xml": {
+        "name": "Timeslot"
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ]
+    }
+  },
+  "responses": {
+    "NotFound": {
+      "description": "The specified ID was not correct",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    }
+  }
+}
